@@ -1,0 +1,50 @@
+<html>
+  <head> </head>
+  <body>
+    <form>
+      Student Name: <input type="text" id="studentName" /><br />
+      Student Age : <input type="number" min="15" /><br />
+      Password: <input type="password" required />
+      Student Gender:
+      <input type="radio" name="gender" />Male
+      <input type="radio" name="gender" />Female<br />
+      Select Course:
+      <select>
+        <option>Backend</option>
+        <option>Frontend</option></select
+      ><br />
+      Email: <input type="email" id="email" required />
+      <button type="submit" id="addStudent">Submit</button>
+    </form>
+  </body>
+  <script>
+    // function validateForm(){
+    //     const studentName = document.getElementById('studentName').value;
+    //     if(studentName == ''){
+    //         alert('Please enter a student name');
+    //     }else if(studentName.length<10){
+    //         alert('Student name is minimum 10 characters');
+    //     }
+    // }
+
+    const studentName = document.getElementById("studentName");
+    const email = document.getElementById("email");
+    const submitButton = document.getElementById("addStudent");
+    submitButton.addEventListener("click", () => {
+      const validRegex =
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(gmail.com|yahoo.com)$/;
+      if (!validRegex.test(email.value)) {
+        email.setCustomValidity("Please enter a valid email format");
+      } else {
+        email.setCustomValidity("");
+      }
+      if (studentName.value == "") {
+        studentName.setCustomValidity("Please enter a student name");
+      } else if (studentName.value.length < 10) {
+        studentName.setCustomValidity("Student name is minimum 10 characters");
+      } else if (studentName.value != "") {
+        studentName.setCustomValidity("");
+      }
+    });
+  </script>
+</html>

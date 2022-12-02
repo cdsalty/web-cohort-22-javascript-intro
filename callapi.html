@@ -1,0 +1,200 @@
+<!-- 
+<html>
+  <head>
+    <style>
+      .parentContainerStyle {
+        display: flex;
+        flex-direction: row;
+        width: 1500px;
+        /* background-color: aquamarine;
+                width: 900px;
+                height: 600px; */
+      }
+      .catListContainerStyle {
+        display: flex;
+        flex-direction: column;
+        font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+      }
+      .catImageContainerStyle {
+        display: flex;
+        flex-direction: row;
+      }
+      .catRowStyle {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    </style>
+    <script>
+      function renderImage(imageUrl) {
+        const imageTag = document.getElementById("catImg");
+        imageTag.src = imageUrl;
+
+        const descDiv = document.getElementById("descDiv");
+        descriptionDiv.innerText = catDesc;
+      }
+
+      function callApi() {
+        let apiRequest = new XMLHttpRequest();
+        apiRequest.onreadystatechange = function () {
+          if (apiRequest.readyState == 4) {
+            // console.log(apiRequest.responseText);
+            const jsonFormatResponse = JSON.parse(apiRequest.responseText);
+            const catListContainerDiv =
+              document.getElementById("catListContainer");
+            for (let i = 0; i < jsonFormatResponse.length; i++) {
+              const catInfo = jsonFormatResponse[i];
+              const catRow = document.createElement("div");
+              catRow.className = "catRowStyle";
+              const nameColumn = document.createElement("span");
+              nameColumn.innerText = catInfo.name;
+              catRow.appendChild(nameColumn);
+
+              const tempColumn = document.createElement("span");
+              tempColumn.innerText = catInfo.temperament;
+              catRow.appendChild(tempColumn);
+
+              // const descColumn = document.createElement("span")
+              // descColumn.innerText = catInfo.description;
+              // catRow.appendChild(descColumn);
+
+              const imgColumn = document.createElement("span");
+              const imgHref = document.createElement("a");
+              imgHref.innerText = "Image";
+              imgHref.href = "#";
+              imgHref.addEventListener("click", () => {
+                renderImage(catInfo.image.url);
+              });
+              imgColumn.appendChild(imgHref);
+              catRow.appendChild(imgColumn);
+
+              catListContainerDiv.appendChild(catRow);
+            }
+            // console.log(jsonFormatResponse[0]);
+            // document.getElementById("apiResponseArea").innerText = apiRequest.responseText;
+          }
+        };
+        apiRequest.open("GET", "https://api.thecatapi.com/v1/breeds");
+        apiRequest.send();
+      }
+    </script>
+  </head>
+
+  <body>
+    <button onclick="callApi()">Call Api</button>
+    <div id="parentContainer" class="parentContainerStyle">
+      <div id="catListContainer" class="catListContainerStyle"></div>
+      <div id="catImageContainer" class="catImageContainerStyle">
+        <img id="catImg" width="200px" height="200px" />
+      </div>
+    </div>
+  </body>
+</html>
+ -->
+
+<html>
+  <head>
+    <style>
+      .parentContainerStyle {
+        display: flex;
+        flex-direction: row;
+        width: 1500px;
+        /* background-color: aquamarine;
+                width: 900px;
+                height: 600px; */
+      }
+      .catListContainerStyle {
+        display: flex;
+        flex-direction: column;
+        font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+      }
+      .catImageContainerStyle {
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+      }
+      .catRowStyle {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    </style>
+    <script>
+      function renderImage(imageUrl, catDesc) {
+        const imageTag = document.getElementById("catImg");
+        imageTag.src = imageUrl;
+
+        const descDiv = document.getElementById("descDiv");
+        descDiv.innerText = catDesc;
+      }
+
+      function callApiViaFetch() {
+        fetch("https://api.thecatapi.com/v1/breeds")
+          .then((r) => r.json())
+          .then((response) => {
+            showData(response);
+          });
+      }
+
+      function showData(jsonFormatResponse) {
+        const catListContainerDiv = document.getElementById("catListContainer");
+        for (let i = 0; i < jsonFormatResponse.length; i++) {
+          const catInfo = jsonFormatResponse[i];
+          const catRow = document.createElement("div");
+          catRow.className = "catRowStyle";
+          const nameColumn = document.createElement("span");
+          nameColumn.innerText = catInfo.name;
+          catRow.appendChild(nameColumn);
+
+          const tempColumn = document.createElement("span");
+          tempColumn.innerText = catInfo.temperament;
+          catRow.appendChild(tempColumn);
+
+          // const descColumn = document.createElement("span")
+          // descColumn.innerText = catInfo.description;
+          // catRow.appendChild(descColumn);
+
+          const imgColumn = document.createElement("span");
+          const imgHref = document.createElement("a");
+          imgHref.innerText = "Image";
+          imgHref.href = "#";
+          imgHref.addEventListener("click", () => {
+            renderImage(catInfo.image.url, catInfo.description);
+          });
+          imgColumn.appendChild(imgHref);
+          catRow.appendChild(imgColumn);
+
+          catListContainerDiv.appendChild(catRow);
+        }
+      }
+
+      function callApi() {
+        let apiRequest = new XMLHttpRequest();
+        apiRequest.onreadystatechange = function () {
+          if (apiRequest.readyState == 4) {
+            // console.log(apiRequest.responseText);
+            const jsonFormatResponse = JSON.parse(apiRequest.responseText);
+            showData(jsonFormatResponse);
+            // console.log(jsonFormatResponse[0]);
+            // document.getElementById("apiResponseArea").innerText = apiRequest.responseText;
+          }
+        };
+        apiRequest.open("GET", "https://api.thecatapi.com/v1/breeds");
+        apiRequest.send();
+      }
+    </script>
+  </head>
+
+  <body>
+    <button onclick="callApiViaFetch()">Call Api</button>
+    <div id="parentContainer" class="parentContainerStyle">
+      <div id="catListContainer" class="catListContainerStyle"></div>
+      <div id="catImageContainer" class="catImageContainerStyle">
+        <img id="catImg" width="200px" height="200px" />
+        <div id="descDiv"></div>
+      </div>
+    </div>
+  </body>
+</html>
